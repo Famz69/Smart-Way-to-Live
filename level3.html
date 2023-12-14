@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-image: url('aset/background/pantai.jpg');
+            /* Ganti dengan URL gambar latar belakang Anda */
+            background-size: cover;
+            font-size: calc(12px + 0.5vmin); /* Ukuran font responsif */
+        }
+
+        #timer {
+            position: absolute;
+            top: 3.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: white;
+            display: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            top: 3.5vh; /* Menggunakan vh (viewport height) bukan % */
+            left: 50vw; /* Menggunakan vw (viewport width) bukan % */
+            font-size: calc(1em + 1vw); /* Ukuran font responsif */
+            font-size: calc(1em + 1vw); /* Ukuran font responsif */
+        }
+
+        .draggable {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            cursor: move;
+            display: none;
+            background-size: cover;
+            width: 10vw; /* Menggunakan vw bukan px */
+            height: 10vw; /* Menggunakan vw bukan px */
+        }
+
+        .droppable {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            display: none;
+            /* Tambahkan ini */
+        }
+
+        #organicTrash1 {
+            background-image: url('aset/garbage/sampah/sampah1/organik1.png');
+            top: 50%;
+            left: 10%;
+        }
+
+        #organicTrash2 {
+            background-image: url('aset/garbage/sampah/sampah1/organik2.png');
+            top: 55%;
+            left: 54%;
+        }
+
+        #organicTrash3 {
+            background-image: url('aset/garbage/sampah/sampah1/organik3.png');
+            top: 63%;
+            left: 72%;
+        }
+
+        #organicTrash4 {
+            background-image: url('aset/garbage/sampah/sampah3/organik4.png');
+            top: 63%;
+            left: 39%;
+        }
+
+        #organicTrash5 {
+            background-image: url('aset/garbage/sampah/sampah1/organik5.png');
+            top: 88%;
+            left: 80%;
+        }
+
+        #inorganicTrash1 {
+            background-image: url('aset/garbage/sampah/sampah1/anorganik1.png');
+            top: 60%;
+            left: 20%;
+        }
+
+        #inorganicTrash2 {
+            background-image: url('aset/garbage/sampah/sampah1/anorganik2.png');
+            top: 69%;
+            left: 61%;
+        }
+
+        #inorganicTrash3 {
+            background-image: url('aset/garbage/sampah/sampah1/anorganik3.png');
+            top: 70%;
+            left: 30%;
+        }
+
+        #inorganicTrash4 {
+            background-image: url('aset/garbage/sampah/sampah1/anorganik4.png');
+            top: 71%;
+            left: 85%;
+        }
+
+        #inorganicTrash5 {
+            background-image: url('aset/garbage/sampah/sampah1/anorganik5.png');
+            top: 80%;
+            left: 47%;
+        }
+
+        #organicBin {
+            background-image: url('aset/garbage/organikbin.png');
+            /* Ganti dengan URL gambar tempat sampah organik Anda */
+            background-size: cover;
+            width: 75px;
+            /* Ubah ini sesuai dengan lebar gambar asli */
+            height: 105px;
+            top: 82%;
+            left: 5%;
+        }
+
+        #inorganicBin {
+            background-image: url('aset/garbage/anorganikbin.png');
+            /* Ganti dengan URL gambar tempat sampah anorganik Anda */
+            background-size: cover;
+            width: 75px;
+            /* Ubah ini sesuai dengan lebar gambar asli */
+            height: 115px;
+            top: 82%;
+            left: 90%;
+        }
+
+        #score {
+            position: absolute;
+            top: 15%;
+            left: 14.5%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: white;
+            display: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: calc(1em + 1vw); /* Ukuran font responsif */
+        }
+
+        #winScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.815);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgb(251, 255, 0);
+            display: none;
+            z-index: 1;
+        }
+
+        #winScreen h1 {
+            font-size: 3em;
+            /* Ubah ukuran teks judul di sini */
+            margin-bottom: 0;
+            font-family: 'Vina Sans', sans-serif;
+        }
+
+        #winScreen p {
+            font-size: 2em;
+            /* Ubah ukuran teks di sini */
+            color: rgb(251, 255, 0);
+            /* Ubah warna teks di sini */
+            margin-top: 0;
+            margin-bottom: 10%;
+            /* Tambahkan CSS lainnya di sini */
+            font-family: 'Vina Sans', sans-serif;
+        }
+
+        #homeButton {
+            background-image: url('aset/button/home.png');
+            /* Ganti dengan URL gambar tombol Anda */
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            cursor: pointer;
+            position: absolute;
+            top: 60%;
+            left: 46%;
+        }
+
+        #nextButton {
+            background-image: url('aset/button/next.png');
+            /* Ganti dengan URL gambar tombol Anda */
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 51%;
+        }
+
+        #loseScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.815);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            /* Mengubah posisi vertikal teks */
+            align-items: center;
+            /* Mengubah posisi horizontal teks */
+            color: red;
+            display: none;
+            z-index: 1;
+        }
+
+        #loseScreen h1 {
+            font-size: 5em;
+            /* Ubah ukuran teks judul di sini */
+            margin-bottom: 30%;
+            font-family: 'Vina Sans', sans-serif;
+        }
+
+        #homeButtonNew {
+            background-image: url('aset/button/home.png');
+            /* Ganti dengan URL gambar tombol Anda */
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 41%;
+        }
+
+        #restartButton {
+            background-image: url('aset/button/restart.png');
+            /* Ganti dengan URL gambar tombol Anda */
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            left: 51%;
+        }
+
+        #targetScore {
+            position: absolute;
+            top: 3.5%;
+            /* Ubah ini untuk mengatur posisi vertikal */
+            left: 5%;
+            /* Ubah ini untuk mengatur posisi horizontal */
+            font-size: 2em;
+            /* Ubah ukuran teks di sini */
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none;
+            /* Tambahkan ini */
+            z-index: 0;
+            font-size: calc(1em + 1vw); /* Ukuran font responsif */
+        }
+
+        #howtoplay {
+            position: absolute;
+            top: 3.5%;
+            /* Ubah ini untuk mengatur posisi vertikal */
+            right: 5%;
+            /* Ubah ini untuk mengatur posisi horizontal */
+            font-size: 1em;
+            /* Ubah ukuran teks di sini */
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none;
+            /* Tambahkan ini */
+            z-index: 0;
+            font-size: calc(1em + 1vw); /* Ukuran font responsif */
+        }
+
+        #level {
+            position: absolute;
+            top: 15%;
+            /* Ubah ini untuk mengatur posisi vertikal */
+            right: 5%;
+            /* Ubah ini untuk mengatur posisi horizontal */
+            font-size: 1em;
+            /* Ubah ukuran teks di sini */
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none;
+            /* Tambahkan ini */
+            z-index: 0;
+            font-size: calc(1em + 1vw); /* Ukuran font responsif */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="timer">20</div>
+    <div id="level">level: 3</div>
+    <div id="howtoplay">tempat sampah abu: organik <br> tempat sampah biru: anorganik</div>
+    <div id="organicTrash1" class="draggable"></div>
+    <div id="organicTrash2" class="draggable"></div>
+    <div id="organicTrash3" class="draggable"></div>
+    <div id="organicTrash4" class="draggable"></div>
+    <div id="organicTrash5" class="draggable"></div>
+    <div id="inorganicTrash1" class="draggable"></div>
+    <div id="inorganicTrash2" class="draggable"></div>
+    <div id="inorganicTrash3" class="draggable"></div>
+    <div id="inorganicTrash4" class="draggable"></div>
+    <div id="inorganicTrash5" class="draggable"></div>
+    <div id="organicBin" class="droppable"></div>
+    <div id="inorganicBin" class="droppable"></div>
+    <div id="score">0</div>
+    <div id="winScreen">
+        <h1>Selamat Anda Telah Menyelesaikan Game!</h1>
+        <p>Terimakasih anda sudah menyelematkan dunia dengan membuang sampah pada tempatnya</p> <!-- Tambahkan ini -->
+        <a href="level1.html" id="homeButton"></a> <!-- Ubah ini -->
+    </div>
+    <div id="loseScreen">
+        <h1>Anda Kalah!</h1>
+        <a href="level1.html" id="homeButtonNew"></a> <!-- Ubah ini -->
+        <div id="restartButton"></div>
+    </div>
+    <div id="targetScore">Target Score: 500</div>
+    <script>
+        var downloadTimer;
+        var score; // Deklarasikan variabel di luar fungsi
+        var timeleft;
+        document.getElementById('timer').style.display = 'block';
+        document.getElementById('score').style.display = 'block'; // Tampilkan skor
+        document.getElementById('targetScore').style.display = 'block';
+        document.getElementById('howtoplay').style.display = 'block';
+        document.getElementById('level').style.display = 'block';
+
+        score = 0; // Inisialisasi skor
+        timeleft = 20;
+        clearInterval(downloadTimer);
+        downloadTimer = setInterval(function () {
+            document.getElementById('timer').innerHTML = timeleft;
+            timeleft -= 1;
+            if (timeleft <= 0) {
+                clearInterval(downloadTimer);
+                document.getElementById('timer').innerHTML = "Finished";
+                if (score >= 500) {
+                    document.getElementById('winScreen').style.display = 'flex';
+                } else {
+                    document.getElementById('loseScreen').style.display = 'flex'; // Tampilkan losescreen
+                }
+            }
+        }, 1000);
+        var draggables = document.querySelectorAll('.draggable');
+        draggables.forEach(draggable => {
+            draggable.style.display = 'block';
+        });
+        var droppables = document.querySelectorAll('.droppable');
+        droppables.forEach(droppable => {
+            droppable.style.display = 'block';
+        });
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', function () {
+                this.classList.add('dragging');
+            });
+
+            draggable.addEventListener('dragend', function () {
+                this.classList.remove('dragging');
+            });
+        });
+
+        droppables.forEach(droppable => {
+            droppable.addEventListener('dragover', function (e) {
+                e.preventDefault();
+            });
+
+            droppable.addEventListener('drop', function (e) {
+                var dragging = document.querySelector('.dragging');
+                if ((this.id === 'organicBin' && dragging.id.startsWith('organicTrash')) ||
+                    (this.id === 'inorganicBin' && dragging.id.startsWith('inorganicTrash'))) {
+                    dragging.style.display = 'none';
+                    score += 100; // Tambahkan skor
+                } else {
+                    score -= 100; // Kurangi skor jika sampah diletakkan di tempat yang salah
+                }
+                document.getElementById('score').innerHTML = score; // Update tampilan skor
+            });
+        });
+
+        function restartGame() {
+            // Reset timer
+            timeleft = 20;
+            document.getElementById('timer').innerHTML = timeleft;
+            document.getElementById('timer').style.display = 'block'; // Tampilkan timer
+
+            // Reset score
+            score = 0;
+            document.getElementById('score').innerHTML = score;
+            document.getElementById('score').style.display = 'block'; // Tampilkan score
+
+            // Sembunyikan win screen dan lose screen
+            document.getElementById('winScreen').style.display = 'none';
+            document.getElementById('loseScreen').style.display = 'none';
+
+            // Tampilkan target score
+            document.getElementById('targetScore').style.display = 'block';
+
+            // Tampilkan sampah dan tempat sampah
+            var draggables = document.querySelectorAll('.draggable');
+            draggables.forEach(draggable => {
+                draggable.style.display = 'block';
+            });
+            var droppables = document.querySelectorAll('.droppable');
+            droppables.forEach(droppable => {
+                droppable.style.display = 'block';
+            });
+            clearInterval(downloadTimer); // Hentikan interval sebelumnya
+            downloadTimer = setInterval(function () {
+                document.getElementById('timer').innerHTML = timeleft;
+                timeleft -= 1;
+                if (timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    document.getElementById('timer').innerHTML = "Finished";
+                    if (score >= 500) {
+                        document.getElementById('winScreen').style.display = 'flex';
+                    } else {
+                        document.getElementById('loseScreen').style.display = 'flex'; // Tampilkan losescreen
+                    }
+                }
+            }, 1000);
+        }
+
+        document.getElementById('restartButton').addEventListener('click', restartGame);
+    </script>
+</body>
+
+</html>
